@@ -6,7 +6,7 @@ import "dart:html" hide Node;
 import "dart:math";
 import 'dajkstra/dajkstra.dart';
 
-typedef String EdgeColorFunc(Node, Node);
+typedef String EdgeColorFunc(Node n1, Node n2);
 typedef String NodeColorFunc(Node);
 typedef String NodeTextFunc(Node);
 
@@ -31,7 +31,7 @@ class GraphPainter {
     _mapHeight = _cellHeight * _ymax;
     _canvasElement.width = _mapWidth;
     _canvasElement.height = _mapHeight;
-    _context = _canvasElement.context2d;
+    _context = _canvasElement.context2D;
   }
 
   void _initCanvas() {

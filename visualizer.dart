@@ -19,24 +19,24 @@ const easyGraph = 1;
 const hardGraph = 30;
 
 void disableDijkstra() {
-  query("#btn_dijkstra_step").disabled = true;
-  query("#btn_dijkstra_run").disabled = true;
+  querySelector("#btn_dijkstra_step").disabled = true;
+  querySelector("#btn_dijkstra_run").disabled = true;
 }
 
 void disableNaive() {
-  query("#btn_naive_step").disabled = true;
-  query("#btn_naive_backstep").disabled = true;
-  query("#btn_naive_run").disabled = true;
+  querySelector("#btn_naive_step").disabled = true;
+  querySelector("#btn_naive_backstep").disabled = true;
+  querySelector("#btn_naive_run").disabled = true;
 }
 
 void updateCodeLocation(String loc) {
   print("Updating location to $loc");
-  IFrameElement base = (query("#code") as IFrameElement);
+  IFrameElement base = (querySelector("#code") as IFrameElement);
   base.src = "naive-simple.html#$loc";
 }
 
 num getRunSpeed() {
-  Element elm = query("#inp_run_speed");
+  Element elm = querySelector("#inp_run_speed");
   return (elm == null) ? runSpeed : int.parse(elm.value, onError: (_) => runSpeed);
 }
 
@@ -44,7 +44,7 @@ void main() {
   print("Running main");
   var buttons = ["#btn_reset", "#btn_easy_map", "#btn_hard_map", "#btn_naive_step", "#btn_naive_backstep",
                  "#btn_naive_run", "#btn_dijkstra_step", "#btn_dijkstra_run"];
-  buttons = new List.from(buttons.map((String s) => query(s)));
+  buttons = new List.from(buttons.map((String s) => querySelector(s)));
   print(buttons);
   buttons[0].disabled = true;
   enableAllButtons() => new List.from(buttons.map((var elm) => elm.disabled = false));
@@ -53,31 +53,31 @@ void main() {
   ShortestPathDriver resetGraph(int graphComplexity) {
     timer.cancel();
     enableAllButtons();
-    var driver = new ShortestPathDriver(query("#map"), nodeCount,
+    var driver = new ShortestPathDriver(querySelector("#map"), nodeCount,
         xmax, ymax, mapWidthMax, mapHeightMax)..generateGraph(graphComplexity);
     driver.onNaiveStateChange.listen((String stateName) => updateCodeLocation(stateName));
     return driver;
   }
   var driver = resetGraph(easyGraph);
   // Setting up buttons.
-  query("#btn_reset").onClick.listen((e) {
+  querySelector("#btn_reset").onClick.listen((e) {
     enableAllButtons();
     driver.resetPath();
     updateCodeLocation("");
   });
-  query("#btn_easy_map").onClick.listen((e) {driver = resetGraph(easyGraph); });
-  query("#btn_hard_map").onClick.listen((e) {driver = resetGraph(hardGraph); });
-  query("#btn_naive_step").onClick.listen((e) {
+  querySelector("#btn_easy_map").onClick.listen((e) {driver = resetGraph(easyGraph); });
+  querySelector("#btn_hard_map").onClick.listen((e) {driver = resetGraph(hardGraph); });
+  querySelector("#btn_naive_step").onClick.listen((e) {
     disableDijkstra();
     driver.takeNaiveStep();
   });
-  query("#btn_naive_backstep").onClick.listen((e) {
+  querySelector("#btn_naive_backstep").onClick.listen((e) {
     disableDijkstra();
     driver.takeNaiveBackStep();
   });
   bool runningNaive = false;
-  query("#btn_naive_run").onClick.listen((e) {
-    var button = query("#btn_naive_run");
+  querySelector("#btn_naive_run").onClick.listen((e) {
+    var button = querySelector("#btn_naive_run");
     disableDijkstra();
     timer.cancel();
     if (runningNaive) {
@@ -91,13 +91,13 @@ void main() {
     }
   });
 
-  query("#btn_dijkstra_step").onClick.listen((e) {
+  querySelector("#btn_dijkstra_step").onClick.listen((e) {
     disableNaive();
     driver.takeDijkstraStep();
   });
   bool runningDijkstra = false;
-  query("#btn_dijkstra_run").onClick.listen((e) {
-    var button = query("#btn_dijkstra_run");
+  querySelector("#btn_dijkstra_run").onClick.listen((e) {
+    var button = querySelector("#btn_dijkstra_run");
     disableNaive();
     timer.cancel();
     if (runningDijkstra) {
@@ -205,7 +205,7 @@ class ShortestPathDriver {
   // Calls fn succesively until it stops (with a delay of speed ms).
   // Returns the timer that handles the call to takeNaiveStep.
   Timer runNaive(bool fn(), int speed) {
-    _timer = new Timer.repeating(new Duration(milliseconds: speed), (Timer timer) {
+    _timer = new Timer.periodic(new Duration(milliseconds: speed), (Timer timer) {
       if (fn()) {
         timer.cancel();
       }

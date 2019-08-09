@@ -1,5 +1,4 @@
 import 'dart:html';
-import 'dart:json';
 
 void updateHighlightedElements() {
   Location loc = window.location;
@@ -8,7 +7,7 @@ void updateHighlightedElements() {
   }
   if (!loc.hash.isEmpty) {
     String hash = loc.hash.substring(1);
-    query("#$hash").classes.add("highlighted");
+    querySelector("#$hash").classes.add("highlighted");
   }
 }
 
