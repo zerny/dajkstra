@@ -8,7 +8,7 @@ DART=dart
 DART2JS=dart2js
 BUILD=build
 NAIVESIMPLE=dajkstra/naive-simple.dart
-EXAMPLEDIR=example
+EXAMPLEDIR=docs
 
 publish: $(VISUALIZER)
 	mkdir -p $(EXAMPLEDIR)
