@@ -3,3 +3,4 @@ dajkstra.iml
 visualizer.js*
 build/
 example/
+docs/*deps
